@@ -14,6 +14,5 @@ namespace FoodAndRecipesAPI.Models
         }
 
         public DbSet<FoodAndRecipesAPI.Models.FoodItems> FoodItems { get; set; }
-        public DbSet<FoodAndRecipesAPI.Models.Ingredients> Ingredients { get; set; }
     }
 }

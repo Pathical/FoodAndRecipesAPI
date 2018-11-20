@@ -28,11 +28,7 @@ namespace FoodAndRecipesAPI.Models
                         Tags = "Cake",
                         Uploaded = "07-10-18 4:20T18:25:43.511Z",
                         Description = "Delicious chocolate cake that everyone will enjoy!",
-                        IngredientsList = new List<Ingredients>
-                        {
-                            new Ingredients { Ingredient = "1 banana"},
-                            new Ingredients { Ingredient = "1cup of apple"}
-                        },
+                        Ingredients = "1 cup milk. 5 bars of chocolate",
                         Instructions ="Preheat oven to 180 degrees. Add flour, cocoa, baking powder and white sugar into a bowl...  ",
                         Width = "324",
                         Height = "160"
@@ -47,12 +43,7 @@ namespace FoodAndRecipesAPI.Models
                         Tags = "Testing",
                         Uploaded = "07-10-18 4:20T18:25:43.511Z",
                         Description = "This is test data for initializing the database",
-                        IngredientsList = new List<Ingredients>
-                        {
-                            new Ingredients { Ingredient = "2 drops of Unicorn tears"},
-                            new Ingredients { Ingredient = "1 tbsp of Love"},
-                            new Ingredients { Ingredient = "3 tsp of  Bleach"}
-                        },
+                        Ingredients = "2 drops of unicorn tears. 1 tbsp of love. 3 tsp of bleech.",
                         Instructions = "There are no instructions here.",
                         Width = "324",
                         Height = "160"
