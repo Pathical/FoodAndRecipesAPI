@@ -71,6 +71,8 @@ namespace FoodAndRecipesAPI.Controllers
 
             try
             {
+                // if the user also wants to update/change the image to a new image
+                // we will need to also update the link ??? for that FoodItem !!!
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -95,6 +97,11 @@ namespace FoodAndRecipesAPI.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (foodItems.Name==null || foodItems.Tags==null)
+            {
+                return BadRequest(); //return null if they did not give a Name or a Tag for the food
             }
 
             _context.FoodItems.Add(foodItems);
