@@ -55,7 +55,7 @@ namespace FoodAndRecipesAPI.Controllers
 
         // PUT: api/Food/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodItems([FromRoute] int id, [FromBody] FoodItems foodItems)
+        public async Task<IActionResult> PutFoodItems([FromRoute] int id, [FromForm] FoodImageItem foodImageItem , [FromBody] FoodItems foodItems)
         {
             if (!ModelState.IsValid)
             {
@@ -66,6 +66,22 @@ namespace FoodAndRecipesAPI.Controllers
             {
                 return BadRequest();
             }
+
+            string newImageURL = "";
+            if (foodImageItem.Image != null)
+            {
+                using (var stream = foodImageItem.Image.OpenReadStream())
+                {
+                    var cloudBlock = await UploadToBlob(foodImageItem.Image.FileName, null, stream);
+                    if (string.IsNullOrEmpty(cloudBlock.StorageUri.ToString()))
+                    {
+                        return BadRequest("An error has occured while uploading your file. Please try again.");
+                    }
+                    newImageURL = cloudBlock.SnapshotQualifiedUri.AbsoluteUri;
+                    foodItems.Url = newImageURL;
+                }
+            }
+            
 
             _context.Entry(foodItems).State = EntityState.Modified;
 
@@ -150,7 +166,7 @@ namespace FoodAndRecipesAPI.Controllers
         }
 
         [HttpPost, Route("upload")]
-        public async Task<IActionResult> UploadFile([FromForm]FoodImageItem food)
+        public async Task<IActionResult> UploadFile([FromForm]FoodImageItem food , [FromBody] FoodItems foodItems)
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
@@ -167,10 +183,6 @@ namespace FoodAndRecipesAPI.Controllers
                     {
                         return BadRequest("An error has occured while uploading your file. Please try again.");
                     }
-
-                    FoodItems foodItems = new FoodItems();
-                    foodItems.Name = food.Name;
-                    foodItems.Tags = food.Tags;
 
                     System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
                     foodItems.Height = image.Height.ToString();
