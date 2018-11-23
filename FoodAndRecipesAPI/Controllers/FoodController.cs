@@ -153,14 +153,14 @@ namespace FoodAndRecipesAPI.Controllers
         }
 
         // GET: api/Food/Tags
-        [Route("tags")]
+        [Route("tags/{tag}")]
         [HttpGet]
-        public async Task<List<string>> GetTags()
+        public async Task<List<FoodItems>> GetTags([FromRoute]string tag)
         {
-            var memes = (from m in _context.FoodItems
-                         select m.Tags).Distinct();
-
-            var returned = await memes.ToListAsync();
+            //var memes = (from m in _context.FoodItems
+            //             select m.Tags).Distinct();
+            var foods = _context.FoodItems.Where(f => f.Tags == tag);
+            var returned = await foods.ToListAsync();
 
             return returned;
         }
