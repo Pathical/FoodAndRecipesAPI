@@ -166,7 +166,7 @@ namespace FoodAndRecipesAPI.Controllers
         }
 
         [HttpPost, Route("upload")]
-        public async Task<IActionResult> UploadFile([FromForm]FoodImageItem food , [FromBody] FoodItems foodItems)
+        public async Task<IActionResult> UploadFile([FromForm]FoodImageItem food )
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
@@ -184,10 +184,15 @@ namespace FoodAndRecipesAPI.Controllers
                         return BadRequest("An error has occured while uploading your file. Please try again.");
                     }
 
+                    FoodItems foodItems = new FoodItems();
+
                     System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
                     foodItems.Height = image.Height.ToString();
                     foodItems.Width = image.Width.ToString();
                     foodItems.Url = cloudBlock.SnapshotQualifiedUri.AbsoluteUri;
+                    foodItems.Description = food.Description;
+                    foodItems.Ingredients = food.Ingredients;
+                    foodItems.Instructions = food.Instructions;
                     foodItems.Uploaded = DateTime.Now.ToString();
 
                     _context.FoodItems.Add(foodItems);
