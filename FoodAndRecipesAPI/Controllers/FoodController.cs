@@ -185,7 +185,8 @@ namespace FoodAndRecipesAPI.Controllers
                     }
 
                     FoodItems foodItems = new FoodItems();
-
+                    foodItems.Name = food.Name;
+                    foodItems.Tags = food.Tags;
                     System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
                     foodItems.Height = image.Height.ToString();
                     foodItems.Width = image.Width.ToString();
