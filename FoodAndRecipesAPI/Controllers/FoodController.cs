@@ -55,7 +55,7 @@ namespace FoodAndRecipesAPI.Controllers
 
         // PUT: api/Food/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodItems([FromRoute] int id, [FromForm] Food food)
+        public async Task<IActionResult> PutFoodItems([FromRoute] int id, [FromBody] Food food)
         {
             if (!ModelState.IsValid)
             {
@@ -68,6 +68,10 @@ namespace FoodAndRecipesAPI.Controllers
             }
 
             var foodItems = await _context.FoodItems.Where(f => f.Id == food.FoodItemId).FirstOrDefaultAsync();
+            if (foodItems == null)
+            {
+                return NotFound();
+            }
             foodItems.Name = food.Name;
             foodItems.Tags = food.Tags;
             foodItems.Description = food.Description;
@@ -84,6 +88,9 @@ namespace FoodAndRecipesAPI.Controllers
                     {
                         return BadRequest("An error has occured while uploading your file. Please try again.");
                     }
+                    System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
+                    foodItems.Height = image.Height.ToString();
+                    foodItems.Width = image.Width.ToString();
                     newImageURL = cloudBlock.SnapshotQualifiedUri.AbsoluteUri;
 
                     foodItems.Url = newImageURL;
